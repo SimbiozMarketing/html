@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сегментація цільової аудиторії</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for consistent typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Inter font and any overrides not easily done with Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Hide details by default for JavaScript toggling */
+        .segment-details {
+            display: none;
+        }
+        /* Style for the active segment card */
+        .segment-card.active {
+            @apply bg-blue-100 border-blue-600; /* Example active state styling */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-6 sm:p-8 lg:p-10 my-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center text-blue-700 mb-8">Сегментація цільової аудиторії Simbioz EMS</h1>
+
+        <!-- Section: Audience Segmentation by Business Type and Systematization Level -->
+        <div class="mb-10">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center">💡 Сегментація цільової аудиторії за типами бізнесу та рівнем систематизації</h2>
+            <div class="overflow-x-auto rounded-lg shadow-md">
+                <table class="min-w-full bg-white rounded-lg">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-sm font-medium rounded-tl-lg">Сегмент</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium">Характеристика бізнесу</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium">Стан систематизації</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium">Основні прагнення клієнта</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium rounded-tr-lg">Приклади ролей у компанії</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">1. Неандертальці</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Мікробізнес (до 10 осіб), часто послуги або дрібне виробництво</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Відсутня оргструктура, процеси не описані</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Вижити, упорядкувати хаос; Зрозуміти як управляти; Мати хоч якусь систему</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Власник, бухгалтер, майстер</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">2. Чарівники</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Малий/середній бізнес (до 50 осіб), послуги або виробництво</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Оргструктура формально існує, але процеси не стандартизовані</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Вийти з операційки; Налагодити керованість; Делегувати рутину; Працювати над продуктом</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Власник, керівник підрозділу, COO</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">3. Власники зоопарку</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Середній бізнес (50–250 осіб), виробництво дрібними партіями</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Є оргструктура та описані процеси, але все ще багато ручної роботи</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Мати передбачуваність; Контролювати фінанси, якість, ресурси; Масштабуватись без хаосу</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">CEO, фіндиректор, ІТ-директор</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">4. Шукачі свободи</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Середній і великий бізнес (250+ осіб), серійне виробництво або комплексні послуги</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Організація систематизована, але бракує інтегрованої цифрової системи</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Звільнити час власника; Сфокусуватися на стратегії; Автоматизувати всю операційну діяльність</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Власник, топменеджер, CIO, CFO</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section: Typical Needs and Motivations by Segments -->
+        <div class="mb-10">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center">🧭 Типові потреби та мотивації за сегментами</h2>
+            <div class="overflow-x-auto rounded-lg shadow-md">
+                <table class="min-w-full bg-white rounded-lg">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-sm font-medium rounded-tl-lg">Сегмент</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium">Основні потреби</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium rounded-tr-lg">Мотиваційні тригери</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">Неандертальці</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Елементарна систематизація; CRM, фінанси, базові процеси</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Втома від ручного управління; Бажання "зробити як у людей"</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">Чарівники</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Автоматизація ключових процесів; Делегування через систему</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Втрата часу на контроль; Відсутність гнучких звітів</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">Власники зоопарку</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Інтеграція підрозділів; KPI, аналітика, контролінг</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Ріст витрат, складність керування; Тиск конкурентів</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-900">Шукачі свободи</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Стратегічне управління; Вихід власника з операційки</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">Бажання масштабування; Підготовка до залучення інвестицій</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section: Brief Description of Each Target Audience Profile -->
+        <div class="mb-10">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center">🧱 Стислий опис кожного профілю цільової аудиторії</h2>
+
+            <!-- Neanderthals Segment Card -->
+            <div class="segment-card bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-4 cursor-pointer hover:bg-blue-100 transition duration-300 ease-in-out" onclick="toggleDetails('neanderthals')">
+                <h3 class="text-xl font-semibold text-blue-700">Неандертальці</h3>
+            </div>
+            <div id="neanderthals" class="segment-details bg-gray-50 border border-gray-200 rounded-b-lg p-4 mt-[-1rem] mb-4 shadow-inner">
+                <p class="mb-2"><span class="font-bold text-blue-600">👉</span> Мікробізнес на старті розвитку.</p>
+                <p class="mb-2"><span class="font-bold text-red-600">🔻</span> Не ведеться облік, хаос у процесах.</p>
+                <p class="mb-2"><span class="font-bold text-green-600">🎯</span> Хочуть "навести порядок", бо далі так не можна.</p>
+                <p class="mb-2"><span class="font-bold text-purple-600">🧩</span> Simbioz EMS як стартова система з CRM+Фінанси.</p>
+            </div>
+
+            <!-- Magicians Segment Card -->
+            <div class="segment-card bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-4 cursor-pointer hover:bg-blue-100 transition duration-300 ease-in-out" onclick="toggleDetails('magicians')">
+                <h3 class="text-xl font-semibold text-blue-700">Чарівники</h3>
+            </div>
+            <div id="magicians" class="segment-details bg-gray-50 border border-gray-200 rounded-b-lg p-4 mt-[-1rem] mb-4 shadow-inner">
+                <p class="mb-2"><span class="font-bold text-blue-600">👉</span> Вже щось налаштовано, але власник "на всьому сидить".</p>
+                <p class="mb-2"><span class="font-bold text-red-600">🔻</span> Рутина забирає сили, делегування не працює.</p>
+                <p class="mb-2"><span class="font-bold text-green-600">🎯</span> Мріє звільнити час і зайнятись продуктом та стратегією.</p>
+                <p class="mb-2"><span class="font-bold text-purple-600">🧩</span> Simbioz EMS допоможе делегувати і контролювати.</p>
+            </div>
+
+            <!-- Zookeepers Segment Card -->
+            <div class="segment-card bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-4 cursor-pointer hover:bg-blue-100 transition duration-300 ease-in-out" onclick="toggleDetails('zookeepers')">
+                <h3 class="text-xl font-semibold text-blue-700">Власники зоопарку</h3>
+            </div>
+            <div id="zookeepers" class="segment-details bg-gray-50 border border-gray-200 rounded-b-lg p-4 mt-[-1rem] mb-4 shadow-inner">
+                <p class="mb-2"><span class="font-bold text-blue-600">👉</span> Бізнес росте, людей багато, але система не встигає.</p>
+                <p class="mb-2"><span class="font-bold text-red-600">🔻</span> Без ERP – все тримається "на чарівниках", іде перенавантаження.</p>
+                <p class="mb-2"><span class="font-bold text-green-600">🎯</span> Хоче, щоб кожен відділ працював як єдиний механізм.</p>
+                <p class="mb-2"><span class="font-bold text-purple-600">🧩</span> Simbioz EMS дає інтеграцію підрозділів і автоматичну аналітику.</p>
+            </div>
+
+            <!-- Freedom Seekers Segment Card -->
+            <div class="segment-card bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-4 cursor-pointer hover:bg-blue-100 transition duration-300 ease-in-out" onclick="toggleDetails('freedomseekers')">
+                <h3 class="text-xl font-semibold text-blue-700">Шукачі свободи</h3>
+            </div>
+            <div id="freedomseekers" class="segment-details bg-gray-50 border border-gray-200 rounded-b-lg p-4 mt-[-1rem] mb-4 shadow-inner">
+                <p class="mb-2"><span class="font-bold text-blue-600">👉</span> Бізнес вже системний, але власник/топ-менеджмент все ще "в операційці".</p>
+                <p class="mb-2"><span class="font-bold text-red-600">🔻</span> Виникає емоційне вигорання, рутинне управління.</p>
+                <p class="mb-2"><span class="font-bold text-green-600">🎯</span> Мета — масштаб, нові ринки, стратегічний розвиток.</p>
+                <p class="mb-2"><span class="font-bold text-purple-600">🧩</span> Simbioz EMS (GMS+OMS) як інструмент тотальної автоматизації і передачі повноважень.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Toggles the visibility of a segment's details.
+         * @param {string} id - The ID of the HTML element containing the details to toggle.
+         */
+        function toggleDetails(id) {
+            const detailsElement = document.getElementById(id);
+            const cardElement = detailsElement.previousElementSibling; // Get the preceding segment-card
+
+            if (detailsElement.style.display === 'none' || detailsElement.style.display === '') {
+                detailsElement.style.display = 'block';
+                cardElement.classList.add('active'); // Add active class to the card
+            } else {
+                detailsElement.style.display = 'none';
+                cardElement.classList.remove('active'); // Remove active class from the card
+            }
+        }
+    </script>
+</body>
+</html>

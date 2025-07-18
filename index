@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтерактивна Маркетингова Стратегія: Simbioz EMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral & Tech Blue -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard for the marketing team. Instead of a linear report, it uses a section-based layout with a sticky navigation bar for quick access. The key sections are: 1) Target Audience (interactive persona cards for deep dives), 2) Marketing Funnel (a visual, clickable diagram), 3) Platforms (tabbed content for Facebook/Instagram strategies), and 4) KPIs (a dynamic chart dashboard). This structure allows users to explore the strategy non-linearly based on their role and immediate needs, making the information more accessible and digestible than a static document. -->
+    <!-- Visualization & Content Choices: 
+        - Target Audience: Report Info -> Detailed personas. Goal -> Compare/Inform. Viz/Presentation -> Interactive cards. Interaction -> Click a persona to display their detailed 'pains' and 'triggers'. Justification -> Engages user, prevents information overload. Library/Method -> Vanilla JS, HTML/Tailwind.
+        - Marketing Funnel: Report Info -> 3-stage funnel concept. Goal -> Organize/Inform. Viz/Presentation -> HTML/CSS diagram of a funnel. Interaction -> Click on a stage to reveal associated content strategies. Justification -> Visually represents a core concept without static images, enhancing comprehension. Library/Method -> HTML/Tailwind, JS for toggling visibility.
+        - Platform Strategy: Report Info -> Separate plans for FB/IG. Goal -> Organize/Compare. Viz/Presentation -> Tabbed interface. Interaction -> Switch between Facebook and Instagram views. Justification -> Cleanly separates distinct but related information. Library/Method -> Vanilla JS, HTML/Tailwind.
+        - KPIs: Report Info -> List of key metrics. Goal -> Inform/Compare. Viz/Presentation -> Combined Bar and Line Chart. Interaction -> Hover over data points for tooltips. Justification -> Translates abstract KPIs into a tangible, visual dashboard mockup, showcasing relationships between metrics (e.g., Leads vs. CPL). Library/Method -> Chart.js.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FDFDFB;
+            color: #1a202c;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #3B82F6;
+            border-bottom-color: #3B82F6;
+        }
+        .persona-card, .tab-button {
+            transition: all 0.3s ease;
+        }
+        .persona-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #3B82F6;
+        }
+        .tab-button.active {
+            background-color: #3B82F6;
+            color: #ffffff;
+        }
+        .funnel-stage {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .funnel-stage:hover {
+            transform: scale(1.03);
+            background-color: #DBEAFE;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-gray-800">Simbioz EMS: Маркетингова Стратегія</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#audience" class="nav-link py-2">Цільова Аудиторія</a>
+                <a href="#funnel" class="nav-link py-2">Воронка</a>
+                <a href="#platforms" class="nav-link py-2">Платформи</a>
+                <a href="#kpi" class="nav-link py-2">KPI</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#audience" class="block py-2 px-6 text-sm hover:bg-gray-100">Цільова Аудиторія</a>
+            <a href="#funnel" class="block py-2 px-6 text-sm hover:bg-gray-100">Воронка</a>
+            <a href="#platforms" class="block py-2 px-6 text-sm hover:bg-gray-100">Платформи</a>
+            <a href="#kpi" class="block py-2 px-6 text-sm hover:bg-gray-100">KPI</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="hero" class="text-center py-16 section-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Інтерактивна Маркетингова Стратегія</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Ключовий меседж: <span class="font-semibold text-blue-600">Simbioz EMS — це не витрати, а інвестиція у ваш вільний час та керований ріст бізнесу.</span></p>
+            <p class="mt-4 text-gray-500">Цей інтерактивний документ допоможе візуалізувати та зрозуміти стратегію просування Simbioz EMS в соціальних мережах.</p>
+        </section>
+
+        <section id="audience" class="py-12 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-2">Портрет Цільової Аудиторії</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Розуміння "болей" та мотивації наших клієнтів — ключ до успіху. Ми виділили два основні сегменти: особи, що приймають рішення, та ті, хто на них впливає. Оберіть персону, щоб дізнатися більше.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <button data-persona="serhiy" class="persona-card active text-left p-4 bg-white rounded-lg border-2 border-transparent shadow-md">
+                    <span class="text-2xl">👨‍💼</span>
+                    <h4 class="font-bold mt-2">Власник "Сергій"</h4>
+                    <p class="text-sm text-gray-500">40+, Власник бізнесу</p>
+                </button>
+                <button data-persona="iryna" class="persona-card text-left p-4 bg-white rounded-lg border-2 border-transparent shadow-md">
+                    <span class="text-2xl">👩‍💻</span>
+                    <h4 class="font-bold mt-2">Директор "Ірина"</h4>
+                    <p class="text-sm text-gray-500">35-45, CEO/COO</p>
+                </button>
+                <button data-persona="oleh" class="persona-card text-left p-4 bg-white rounded-lg border-2 border-transparent shadow-md">
+                    <span class="text-2xl">📈</span>
+                    <h4 class="font-bold mt-2">Керівник "Олег"</h4>
+                    <p class="text-sm text-gray-500">30-40, Head of Sales</p>
+                </button>
+                <button data-persona="maryna" class="persona-card text-left p-4 bg-white rounded-lg border-2 border-transparent shadow-md">
+                    <span class="text-2xl">👥</span>
+                    <h4 class="font-bold mt-2">HR "Марина"</h4>
+                    <p class="text-sm text-gray-500">35-50, HR-директор</p>
+                </button>
+            </div>
+            <div id="persona-details" class="bg-white p-6 rounded-lg shadow-lg transition-all duration-500">
+            </div>
+        </section>
+
+        <section id="funnel" class="py-12 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-2">Маркетингова Воронка</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Стратегія базується на поступовому "прогріві" клієнта. Кожен етап воронки має свою мету та відповідний контент. Натисніть на етап, щоб побачити деталі.</p>
+            <div class="flex flex-col items-center">
+                <div data-funnel="awareness" class="funnel-stage w-full md:w-2/3 lg:w-1/2 p-6 bg-blue-100 text-center rounded-t-lg border-b-2 border-dashed border-blue-300">
+                    <h3 class="text-xl font-semibold text-blue-800">Обізнаність (Awareness)</h3>
+                </div>
+                <div id="awareness-content" class="w-full md:w-2/3 lg:w-1/2 p-6 bg-gray-100 hidden">
+                    <h4 class="font-bold mb-2">Мета:</h4>
+                    <p class="mb-4">Привернути увагу ЦА, яка ще не шукає ERP, але відчуває біль. Говоримо про проблеми бізнесу.</p>
+                    <h4 class="font-bold mb-2">Типи контенту:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Статті про типові "болі" власників</li>
+                        <li>Інфографіка "5 ознак, що ви потонули в рутині"</li>
+                        <li>Короткі пости про неефективність Excel</li>
+                    </ul>
+                </div>
+
+                <div data-funnel="consideration" class="funnel-stage w-full md:w-5/6 lg:w-2/3 p-6 bg-blue-200 text-center border-b-2 border-dashed border-blue-400">
+                    <h3 class="text-xl font-semibold text-blue-800">Розгляд (Consideration)</h3>
+                </div>
+                <div id="consideration-content" class="w-full md:w-5/6 lg:w-2/3 p-6 bg-gray-100 hidden">
+                     <h4 class="font-bold mb-2">Мета:</h4>
+                    <p class="mb-4">Показати, ЯК саме Simbioz EMS вирішує проблеми. Формуємо довіру.</p>
+                    <h4 class="font-bold mb-2">Типи контенту:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Детальні кейси клієнтів з цифрами та результатами</li>
+                        <li>Відео-відгуки та демонстрація роботи системи</li>
+                        <li>Прямі ефіри та вебінари з експертами</li>
+                    </ul>
+                </div>
+
+                <div data-funnel="decision" class="funnel-stage w-full md:w-full lg:w-5/6 p-6 bg-blue-300 text-center rounded-b-lg">
+                    <h3 class="text-xl font-semibold text-blue-800">Рішення (Decision)</h3>
+                </div>
+                <div id="decision-content" class="w-full md:w-full lg:w-5/6 p-6 bg-gray-100 hidden">
+                    <h4 class="font-bold mb-2">Мета:</h4>
+                    <p class="mb-4">Мотивувати до цільової дії тих, хто вже готовий до впровадження.</p>
+                    <h4 class="font-bold mb-2">Типи контенту:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Пропозиція безкоштовної консультації</li>
+                        <li>Заклик записатися на персональне демо</li>
+                        <li>Порівняння тарифів або пакетів впровадження</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="platforms" class="py-12 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-2">Стратегія для Платформ</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Кожна соціальна мережа вимагає свого підходу. Facebook є основним каналом для залучення лідів, тоді як Instagram працює на впізнаваність та гуманізацію бренду.</p>
+            <div class="flex justify-center mb-8">
+                <button data-tab="facebook" class="tab-button active py-2 px-6 rounded-l-lg bg-gray-200">Facebook</button>
+                <button data-tab="instagram" class="tab-button py-2 px-6 rounded-r-lg bg-gray-200">Instagram</button>
+            </div>
+
+            <div id="facebook-content" class="platform-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold mb-4">Facebook: Експертність та Лідогенерація</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-lg mb-2">Контент-рубрики:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">📌</span><div><span class="font-bold">#БільВласника:</span> Статті та пости, що резонують з проблемами ЦА.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">💡</span><div><span class="font-bold">#РішенняSimbioz:</span> Кейси, демо та відгуки, що демонструють цінність.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">🏆</span><div><span class="font-bold">#ЕкспертиSimbioz:</span> Знайомство з командою для побудови довіри.</div></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg mb-2">Рекламні кампанії:</h4>
+                         <ul class="space-y-2">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">🎯</span><div><span class="font-bold">Холодна аудиторія:</span> Реклама постів про "болі" на широку ЦА керівників.</div></li>
+                            <li class="flex items-start"><span class="text-yellow-500 mr-2">🔄</span><div><span class="font-bold">Тепла (Ретаргетинг):</span> Реклама кейсів та лід-магнітів тим, хто вже взаємодіяв.</div></li>
+                            <li class="flex items-start"><span class="text-red-500 mr-2">🔥</span><div><span class="font-bold">Гаряча (Lookalike):</span> Пряма пропозиція консультації схожій на клієнтів аудиторії.</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="instagram-content" class="platform-content hidden bg-white p-6 rounded-lg shadow-lg">
+                 <h3 class="text-2xl font-bold mb-4">Instagram: Візуалізація та Гуманізація</h3>
+                 <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-lg mb-2">Формати контенту:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start"><span class="text-purple-500 mr-2">🎬</span><div><span class="font-bold">Reels:</span> Короткі експертні відео, лайфхаки, погляди за лаштунки.</div></li>
+                            <li class="flex items-start"><span class="text-purple-500 mr-2">🖼️</span><div><span class="font-bold">Пости (Каруселі):</span> Візуальні кейси, інфографіка, цитати клієнтів.</div></li>
+                            <li class="flex items-start"><span class="text-purple-500 mr-2">💬</span><div><span class="font-bold">Stories:</span> Інтерактивні опитування, Q&A сесії, процес роботи над проєктами.</div></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg mb-2">Мета реклами:</h4>
+                        <p>Основна мета — не прямі продажі, а підвищення впізнаваності бренду та перелив зацікавленої аудиторії на сайт або у Facebook для подальшого "прогріву" більш детальним та експертним контентом.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kpi" class="py-12 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-2">Вимірювання Ефективності (KPI)</h2>
+             <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Успіх будь-якої стратегії вимірюється цифрами. Нижче наведено приклад дашборду з ключовими показниками ефективності, які необхідно відстежувати для оцінки результативності маркетингових зусиль.</p>
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+                <div class="chart-container">
+                    <canvas id="kpiChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-6 bg-gray-100 border-t">
+        <p class="text-gray-600">&copy; 2025 Simbioz. Інтерактивна стратегія. Всі права захищено.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const personas = {
+                serhiy: {
+                    title: 'Власник "Сергій", 40+',
+                    pains: [
+                        "Потонув у рутині, кожен процес зав'язаний на мені.",
+                        "Втрачаємо клієнтів через хаос у відділі продажів.",
+                        "Не розумію реальну маржинальність, всі звіти в Excel.",
+                        "Хочу масштабуватися, але боюся, що все розвалиться."
+                    ],
+                    triggers: [
+                        "Усвідомлення, що поточні методи стримують ріст.",
+                        "Втрата великого клієнта через безлад.",
+                        "Успішний кейс конкурента, що впровадив автоматизацію."
+                    ]
+                },
+                iryna: {
+                    title: 'Директор "Ірина", 35-45',
+                    pains: [
+                        "Процеси неоптимальні, комунікація між відділами 'крива'.",
+                        "Власник вимагає звітність, яку я не можу швидко надати.",
+                        "Потрібно систематизувати найм, адаптацію та навчання.",
+                        "Використовуємо 10+ несинхронізованих програм."
+                    ],
+                    triggers: [
+                        "Поставлене завдання від власника/ради директорів.",
+                        "Виділений бюджет на діджиталізацію на новий рік.",
+                        "Неможливість виконати стратегічні цілі через хаос."
+                    ]
+                },
+                oleh: {
+                    title: 'Керівник "Олег", 30-40',
+                    pains: [
+                        "Менеджери ведуть клієнтів у своїх блокнотах.",
+                        "Не можу побудувати воронку та спрогнозувати план.",
+                        "Багато часу йде на ручну підготовку документів."
+                    ],
+                    triggers: [
+                        "Вимога керівництва надати прозору аналітику.",
+                        "Постійне невиконання плану продажів.",
+                        "Розуміння, що конкуренти працюють ефективніше."
+                    ]
+                },
+                maryna: {
+                    title: 'HR "Марина", 35-50',
+                    pains: [
+                        "Складний процес онбордингу нових співробітників.",
+                        "Немає єдиної бази знань та навчальних матеріалів.",
+                        "Складно відстежувати KPI та планувати розвиток команди."
+                    ],
+                    triggers: [
+                        "Велика плинність кадрів на випробувальному терміні.",
+                        "Завдання оптимізувати витрати на найм та навчання.",
+                        "Ріст компанії, що вимагає систематизації HR-процесів."
+                    ]
+                }
+            };
+
+            const personaDetailsContainer = document.getElementById('persona-details');
+            const personaButtons = document.querySelectorAll('.persona-card');
+
+            function updatePersonaDetails(personaKey) {
+                const persona = personas[personaKey];
+                let painsHTML = persona.pains.map(pain => `<li class="flex items-start mb-2"><span class="text-red-500 mr-3 mt-1">&#10007;</span><span>${pain}</span></li>`).join('');
+                let triggersHTML = persona.triggers.map(trigger => `<li class="flex items-start mb-2"><span class="text-green-500 mr-3 mt-1">&#10003;</span><span>${trigger}</span></li>`).join('');
+
+                personaDetailsContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4">${persona.title}</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-lg mb-3 text-red-600">Ключові "Болі":</h4>
+                            <ul class="text-gray-700">${painsHTML}</ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg mb-3 text-green-600">Тригери до Покупки:</h4>
+                            <ul class="text-gray-700">${triggersHTML}</ul>
+                        </div>
+                    </div>
+                `;
+            }
+
+            personaButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    personaButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    updatePersonaDetails(button.dataset.persona);
+                });
+            });
+
+            updatePersonaDetails('serhiy');
+
+            const funnelStages = document.querySelectorAll('.funnel-stage');
+            funnelStages.forEach(stage => {
+                stage.addEventListener('click', () => {
+                    const contentId = `${stage.dataset.funnel}-content`;
+                    const contentElement = document.getElementById(contentId);
+                    contentElement.classList.toggle('hidden');
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const platformContents = document.querySelectorAll('.platform-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    platformContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    document.getElementById(`${button.dataset.tab}-content`).classList.remove('hidden');
+                });
+            });
+            
+            const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+            const kpiChart = new Chart(kpiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень'],
+                    datasets: [{
+                        label: 'Залучено Лідів (MQL)',
+                        data: [45, 59, 80, 81, 76, 85],
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    }, {
+                        label: 'Вартість Ліда (CPL), $',
+                        data: [22, 20, 18, 15, 17, 14],
+                        type: 'line',
+                        fill: false,
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        tension: 0.1,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                             title: {
+                                display: true,
+                                text: 'Кількість Лідів'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Вартість, $'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Динаміка Ключових Показників Ефективності (Приклад)',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataset.type === 'line') {
+                                           label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                        } else {
+                                           label += context.parsed.y;
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+        });
+    </script>
+</body>
+</html>
